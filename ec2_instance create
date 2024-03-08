@@ -13,3 +13,8 @@ tags= {
 Name = "ajay1"
 }
 }
+resource "aws_volume_attachment" "wed" {
+device_name = "/dev/sdf"
+instance_id = "i-055496a07bb77207a"
+volume_id = "vol-07c452f00c0f9c74f"
+}

@@ -1,0 +1,15 @@
+resource "aws_instance" "web" {
+ami = "ami-08f7912c15ca96832"
+instance_type = "t2.micro"
+key_name = "rowdy33"
+tags= {
+Name = "vamsi1"
+}
+}
+resource "aws_ebs_volume" "web" {
+availability_zone = "us-west-2b"
+size = 11
+tags= {
+Name = "ajay1"
+}
+}

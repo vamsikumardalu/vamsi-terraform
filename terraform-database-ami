@@ -1,0 +1,101 @@
+vi provider.tf---1
+  terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.41.0"
+    }
+  }
+}
+
+provider "aws" {
+  # Configuration options
+profile = "default"
+region = "eu-west-3"
+}
+vi ec2.tf----2
+  # Create EC2 Instance - Amazon Linux
+resource "aws_instance" "my-ec2-vm" {
+  ami           = data.aws_ami.amzlinux.id
+  instance_type = var.ec2_instance_type
+  key_name      = "vamsi33"
+        user_data = file("apache-install.sh")
+  vpc_security_group_ids = [aws_security_group.vpc-ssh.id, aws_security_group.vpc-web.id]
+  tags = {
+    "Name" = "amz-linux-vm"
+  }
+}
+vi data.tf----3
+  # Get latest AMI ID for Amazon Linux2 OS
+data "aws_ami" "amzlinux" {
+  most_recent = true
+  owners = [ "amazon" ]
+  filter {
+    name = "name"
+    values = [ "amzn2-ami-hvm-*-gp2" ]
+  }
+  filter {
+    name = "root-device-type"
+    values = [ "ebs" ]
+  }
+  filter {
+    name = "virtualization-type"
+    values = [ "hvm" ]
+  }
+  filter {
+    name = "architecture"
+    values = [ "x86_64" ]
+  }
+}
+vi security.tf---4
+      description = "Allow Port 80"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow Port 443"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow all ip and ports outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+vi variable.tf----5
+  # Input Variables
+variable "aws_region" {
+  description = "Region in which AWS Resources to be created"
+  type = string
+  default = "us-east-1"
+}
+
+
+variable "ec2_instance_type" {
+  description = "EC2 Instance Type"
+  type = string
+  default = "t3.micro"
+}
+vi output.tf----6
+  # Define Output Values
+
+# Attribute Reference
+output "ec2_instance_publicip" {
+  description = "EC2 Instance Public IP"
+  value = aws_instance.my-ec2-vm.public_ip
+}
+
+# Attribute Reference - Create Public DNS URL
+output "ec2_publicdns" {
+  description = "Public DNS URL of an EC2 Instance"
+  value = aws_instance.my-ec2-vm.public_dns
+}

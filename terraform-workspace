@@ -1,4 +1,4 @@
-vi provider.tf
+vi provider.tf ---------1step
 terraform {
   required_providers {
     aws = {
@@ -13,7 +13,7 @@ provider "aws" {
 profile = "default"
 region = "eu-west-2"
 }
-vi resource.tf
+vi resource.tf---------2step
 locals {
 instance_name = "${terraform.workspace}-instance"
 }
@@ -25,10 +25,10 @@ tags= {
 Name = local.instance_name
 }
 }
-vi var.tf
+vi var.tf-----3step
 variable "instance_type" {
 }
-vi terraform-dev.tfvars
+vi terraform-dev.tfvars-----4step
 instance_type = "t2.micro"
-vi terraform-test.tfvars
+vi terraform-test.tfvars-----5step
 instance_type = "t3.micro"

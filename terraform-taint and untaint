@@ -22,9 +22,10 @@ tags= {
 Name = "vamsi11"
 }
 }
-terraform init
-terraform validate
-terraform plan
-terraform apply
-terraform taint aws_instance.va
-terraform untaint aws_instance.va
+1.terraform init
+2.terraform validate
+3.terraform plan
+4.terraform apply
+5.terraform taint aws_instance.va
+ u r wish untaint (DO or NOT DOING)
+6.terraform untaint aws_instance.va

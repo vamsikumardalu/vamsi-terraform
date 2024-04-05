@@ -1,0 +1,41 @@
+vi provider.tf
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.44.0"
+    }
+  }
+}
+
+provider "aws" {
+  # Configuration options
+profile = "default"
+region = "us-east-1"
+}
+vi resource.tf
+resource "aws_s3_bucket" "vamsi" {
+bucket = "vamsvams"
+acl = "private"
+tags={
+Name = "vamsi11"
+Environment = "Dev"
+}
+}
+vi backend.tf
+terraform {
+backend "s3" {
+bucket = "vamsvams"
+key = "dev/terraform.tfstate"
+region = "us-east-1"
+}
+}
+vi ece.tf
+resource "aws_instance" "vamsi" {
+ami = "ami-080e1f13689e07408"
+instance_type = "t2.micro"
+key_name = "s31"
+tags={
+Name = "vamsi11"
+}
+}

@@ -1,0 +1,28 @@
+resource "aws_vpc" "vv" {
+cidr_block = "11.0.0.0/16"
+tags= {
+Name = "vcube-vpc"
+}
+}
+resource "aws_subnet" "public_subnet" {
+vpc_id = aws_vpc.vv.id
+cidr_block = "11.0.0.0/24"
+availability_zone = "ap-northeast-2a"
+tags= {
+Name = "vcube-subnet-pu"
+}
+}
+resource "aws_subnet" "private_subnet" {
+vpc_id = aws_vpc.vv.id
+cidr_block = "11.0.1.0/24"
+availability_zone = "ap-northeast-2b"
+tags= {
+Name = "vcube-subnet-pr"
+}
+}
+resource "aws_internet_gateway" "igw" {
+vpc_id = aws_vpc.vv.id
+tags= {
+Name = "vcube-igw"
+}
+}

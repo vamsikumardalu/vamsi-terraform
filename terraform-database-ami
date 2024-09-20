@@ -99,3 +99,10 @@ output "ec2_publicdns" {
   description = "Public DNS URL of an EC2 Instance"
   value = aws_instance.my-ec2-vm.public_dns
 }
+vi apache.tf
+#! /bin/bash
+sudo yum update -y
+sudo yum installl -y httpd
+sudo systemctl enable httpd
+sudo service httpd start
+echo "<h1>Welcome to vcube ! AWS Infra created using  terraform in us-east-1 Region </h1>" sudo tee /var/www/html/index.html
